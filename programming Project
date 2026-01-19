@@ -1,0 +1,89 @@
+#include <iostream>
+using namespace std;
+
+// Function to input a valid non-negative value
+double readAmount(const string& prompt)
+{
+    double value;
+    do
+    {
+        cout << prompt;
+        cin >> value;
+
+        if (value < 0)
+        {
+            cout << "INVALID INPUT! Amount cannot be negative.\n";
+        }
+    } while (value < 0);
+
+    return value;
+}
+
+// Function to compute monthly deduction
+double calculateDeduction(double currentAmount, double ratePerMonth)
+{
+    return currentAmount * ratePerMonth;
+}
+
+int main()
+{
+    double yearlyRate, openingBalance;
+    int totalMonths;
+
+    cout << "\n\t\tSAVINGS ACCOUNT TRACKING PROGRAM";
+    cout << "\n\t\t--------------------------------\n\n";
+
+    cout << "ENTER OPENING ACCOUNT BALANCE: ";
+    cin >> openingBalance;
+
+    cout << "ENTER ANNUAL TAX RATE (example: 0.10 for 10%): ";
+    cin >> yearlyRate;
+
+    cout << "ENTER NUMBER OF MONTHS ACCOUNT IS ACTIVE: ";
+    cin >> totalMonths;
+
+    cout << "\n--------------------------------------------------\n\n";
+
+    // Arrays for monthly records
+    double monthlyDeposit[totalMonths];
+    double monthlyWithdrawal[totalMonths];
+    double monthlyDeduction[totalMonths];
+
+    double ratePerMonth = yearlyRate / 12.0;
+
+    double currentBalance = openingBalance;
+    double sumDeposits = 0;
+    double sumWithdrawals = 0;
+    double sumDeductions = 0;
+
+    for (int m = 0; m < totalMonths; m++)
+    {
+        cout << "MONTH " << m + 1 << " DETAILS\n";
+
+        monthlyDeposit[m] = readAmount("ENTER AMOUNT DEPOSITED: ");
+        currentBalance += monthlyDeposit[m];
+        sumDeposits += monthlyDeposit[m];
+
+        monthlyWithdrawal[m] = readAmount("ENTER AMOUNT WITHDRAWN: ");
+        currentBalance -= monthlyWithdrawal[m];
+        sumWithdrawals += monthlyWithdrawal[m];
+
+        monthlyDeduction[m] = calculateDeduction(currentBalance, ratePerMonth);
+        currentBalance -= monthlyDeduction[m];
+        sumDeductions += monthlyDeduction[m];
+
+        cout << "ACCOUNT BALANCE AFTER MONTH " << m + 1 << ": "
+             << currentBalance << "\n\n";
+    }
+
+    cout << "\n==================================================\n";
+    cout << "ACCOUNT SUMMARY REPORT\n";
+    cout << "==================================================\n";
+    cout << "ENDING BALANCE: " << currentBalance << endl;
+    cout << "TOTAL DEPOSITS: " << sumDeposits << endl;
+    cout << "TOTAL WITHDRAWALS: " << sumWithdrawals << endl;
+    cout << "TOTAL TAX DEDUCTED: " << sumDeductions << endl;
+
+    return 0;
+}
+
